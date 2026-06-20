@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConvertZZZ - Convertidor Universal de Imágenes</title>
+    <style>
+        :root {
+            --bg-color: #121214;
+            --surface-color: #1a1a1e;
+            --primary-color: #ec4899; 
+            --primary-hover: #db2777;
+            --success-color: #10b981;
+            --success-hover: #059669;
+            --text-color: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --border-color: #2c2c35;
+            --input-bg: #27272a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* ================= ENCABEZADO PREMIUM ================= */
+        .app-header {
+            background-color: rgba(26, 26, 30, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-logo {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.1rem;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .brand-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-tag {
+            font-size: 0.75rem;
+            background-color: rgba(236, 72, 153, 0.1);
+            color: var(--primary-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            border: 1px solid rgba(236, 72, 153, 0.2);
+            font-weight: 600;
+        }
+
+        /* ================= ESTRUCTURA PRINCIPAL ================= */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            background-color: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 650px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.4s ease;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ================= SELECTOR DE FORMATO ================= */
+        .format-selector-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            display: inline-flex;
+        }
+
+        .format-selector-box label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .select-style {
+            background-color: var(--input-bg);
+            color: white;
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 1.5rem 0.4rem 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .select-style:focus {
+            border-color: var(--primary-color);
+        }
+
+        /* ================= DRAG & DROP Y LISTA ================= */
+        .drop-zone {
+            border: 2px dashed var(--primary-color);
+            padding: 2.5rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            background-color: rgba(236, 72, 153, 0.01);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+        .drop-zone:hover, .drop-zone.drag-over {
+            background-color: rgba(236, 72, 153, 0.06);
+            border-color: var(--primary-hover);
+        }
+
+        .drop-zone p {
+            margin: 0;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        #file-input { display: none; }
+
+        .global-actions {
+            display: none;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .file-list {
+            max-height: 350px;
+            overflow-y: auto;
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding-right: 5px;
+        }
+
+        .file-list::-webkit-scrollbar { width: 6px; }
+        .file-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+        .file-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            animation: fadeIn 0.3s ease;
+            text-align: left;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            overflow: hidden;
+        }
+
+        .file-info img {
+            width: 45px;
+            height: 45px;
+            border-radius: 4px;
+            object-fit: cover;
+            background: #222;
+        }
+
+        .file-name {
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 250px;
+        }
+
+        .file-format {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn:active { transform: scale(0.98); }
+
+        .btn-success {
+            background-color: var(--success-color);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+
+        .btn-success:hover { background-color: var(--success-hover); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<header class="app-header">
+    <div class="brand">
+        <div class="brand-logo"><img src="media/logo-zorizori.png" alt="Zoriyu" style="width: 25px; height: 25px;"></div>
+        <span class="brand-name">ConvertZZZ</span>
+    </div>
+    <div class="header-tag">100% Local y Seguro</div>
+</header>
+
+<main class="main-content">
+    <div class="container">
+        <h1>Convertidor Universal de Imágenes</h1>
+        <p>Soporta .jfif, .png, .webp, .avif, .bmp y .tiff de forma nativa.</p>
+
+        <div class="format-selector-box">
+            <label for="output-format">Convertir archivos a:</label>
+            <select id="output-format" class="select-style">
+                <option value="jpeg">JPG (.jpg)</option>
+                <option value="png">PNG (.png)</option>
+                <option value="webp">WebP (.webp)</option>
+            </select>
+        </div>
+
+        <div class="drop-zone" id="drop-zone">
+            <p>Arrastra tus imágenes aquí o <span style="color: var(--primary-color); text-decoration: underline;">haz clic para buscar</span></p>
+            <input type="file" id="file-input" accept="image/*" multiple>
+        </div>
+
+        <div class="global-actions" id="global-actions">
+            <button id="download-all-btn" class="btn btn-success">Descargar todo en un .ZIP</button>
+        </div>
+
+        <div class="file-list" id="file-list"></div>
+    </div>
+</main>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    const fileListContainer = document.getElementById('file-list');
+    const globalActions = document.getElementById('global-actions');
+    const downloadAllBtn = document.getElementById('download-all-btn');
+    const outputFormatSelect = document.getElementById('output-format');
+
+    let convertedFiles = [];
+    let currentFilesScope = []; // Guardamos referencia de los archivos subidos para permitir recambios
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            currentFilesScope = Array.from(e.target.files);
+            processAllFiles();
+        }
+    });
+
+    // Si el usuario cambia el formato en el selector, re-procesamos automáticamente las imágenes cargadas
+    outputFormatSelect.addEventListener('change', () => {
+        if (currentFilesScope.length > 0) processAllFiles();
+    });
+
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-over');
+        if (e.dataTransfer.files.length > 0) {
+            currentFilesScope = Array.from(e.dataTransfer.files);
+            processAllFiles();
+        }
+    });
+
+    function processAllFiles() {
+        fileListContainer.innerHTML = '';
+        convertedFiles = [];
+        globalActions.style.display = 'none';
+        
+        const targetFormat = outputFormatSelect.value; // 'jpeg', 'png' o 'webp'
+        const fileExt = targetFormat === 'jpeg' ? 'jpg' : targetFormat;
+
+        currentFilesScope.forEach(file => {
+            if (!file.type.startsWith('image/') && !file.name.endsWith('.jfif')) return;
+
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+
+                    // Si elegimos PNG, permitimos transparencia completa.
+                    // Si elegimos JPG o WEBP, forzamos fondo blanco de respaldo.
+                    if (targetFormat !== 'png') {
+                        ctx.fillStyle = '#FFFFFF';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    }
+                    
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Convertir dinámicamente al tipo MIME seleccionado
+                    const dataUrl = canvas.toDataURL(`image/${targetFormat}`, 0.9);
+                    const originalExtension = file.name.split('.').pop();
+                    const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'imagen';
+                    const newFileName = `${originalName}.${fileExt}`;
+
+                    convertedFiles.push({
+                        name: newFileName,
+                        url: dataUrl
+                    });
+
+                    createFileRow(newFileName, dataUrl, originalExtension);
+
+                    if (convertedFiles.length > 1) {
+                        globalActions.style.display = 'block';
+                    }
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function createFileRow(fileName, url, originalExtension) {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+
+        item.innerHTML = `
+            <div class="file-info">
+                <img src="${url}" alt="preview">
+                <div>
+                    <div class="file-name" title="${fileName}">${fileName}</div>
+                    <span class="file-format">${originalExtension}</span>
+                </div>
+            </div>
+            <a class="btn" href="${url}" download="${fileName}">Descargar</a>
+        `;
+
+        fileListContainer.appendChild(item);
+    }
+
+    // Código del generador de ZIP local impecable
+    downloadAllBtn.addEventListener('click', async () => {
+        if (convertedFiles.length === 0) return;
+
+        try {
+            let zipData = [];
+            let localHeaderOffset = 0;
+            let centralDirectoryData = [];
+            let centralDirectoryOffset = 0;
+
+            for (let file of convertedFiles) {
+                const response = await fetch(file.url);
+                const arrayBuffer = await response.arrayBuffer();
+                const fileBytes = new Uint8Array(arrayBuffer);
+                const nameBytes = new TextEncoder().encode(file.name);
+                
+                const time = 0x5460; 
+                const date = 0x5Cbc; 
+                const crc = crc32(fileBytes);
+
+                const localHeader = new Uint8Array(30 + nameBytes.length);
+                const viewLH = new DataView(localHeader.buffer);
+                
+                viewLH.setUint32(0, 0x04034b50, true);
+                viewLH.setUint16(4, 10, true);
+                viewLH.setUint16(6, 0, true);
+                viewLH.setUint16(8, 0, true);
+                viewLH.setUint16(10, time, true);
+                viewLH.setUint16(12, date, true);
+                viewUint32 = viewLH.setUint32(14, crc, true);
+                viewLH.setUint32(18, fileBytes.length, true);
+                viewLH.setUint32(22, fileBytes.length, true);
+                viewLH.setUint16(26, nameBytes.length, true);
+                viewLH.setUint16(28, 0, true);
+                localHeader.set(nameBytes, 30);
+
+                zipData.push(localHeader);
+                zipData.push(fileBytes);
+
+                const cdRecord = new Uint8Array(46 + nameBytes.length);
+                const viewCD = new DataView(cdRecord.buffer);
+
+                viewCD.setUint32(0, 0x02014b50, true);
+                viewCD.setUint16(4, 20, true);
+                viewCD.setUint16(6, 10, true);
+                viewCD.setUint16(8, 0, true);
+                viewCD.setUint16(10, 0, true);
+                viewCD.setUint16(12, time, true);
+                viewCD.setUint16(14, date, true);
+                viewCD.setUint32(16, crc, true);
+                viewCD.setUint32(20, fileBytes.length, true);
+                viewCD.setUint32(24, fileBytes.length, true);
+                viewCD.setUint16(28, nameBytes.length, true);
+                viewCD.setUint16(30, 0, true);
+                viewCD.setUint16(32, 0, true);
+                viewCD.setUint16(34, 0, true);
+                viewCD.setUint16(36, 0, true);
+                viewCD.setUint32(38, 0, true);
+                viewCD.setUint32(42, localHeaderOffset, true);
+                cdRecord.set(nameBytes, 46);
+
+                centralDirectoryData.push(cdRecord);
+                localHeaderOffset += localHeader.length + fileBytes.length;
+            }
+
+            centralDirectoryOffset = localHeaderOffset;
+            let cdLength = 0;
+            centralDirectoryData.forEach(cd => { cdLength += cd.length; zipData.push(cd); });
+
+            const eocd = new Uint8Array(22);
+            const viewEOCD = new DataView(eocd.buffer);
+
+            viewEOCD.setUint32(0, 0x06054b50, true);
+            viewEOCD.setUint16(4, 0, true);
+            viewEOCD.setUint16(6, 0, true);
+            viewEOCD.setUint16(8, convertedFiles.length, true);
+            viewEOCD.setUint16(10, convertedFiles.length, true);
+            viewEOCD.setUint32(12, cdLength, true);
+            viewEOCD.setUint32(16, centralDirectoryOffset, true);
+            viewEOCD.setUint16(20, 0, true);
+
+            zipData.push(eocd);
+
+            const blob = new Blob(zipData, { type: 'application/zip' });
+            const zipUrl = URL.createObjectURL(blob);
+            
+            const tempLink = document.createElement('a');
+            tempLink.href = zipUrl;
+            tempLink.download = 'imagenes_convertidas.zip';
+            tempLink.click();
+            
+            URL.revokeObjectURL(zipUrl);
+        } catch (error) {
+            alert('Ocurrió un error al empaquetar el archivo ZIP.');
+        }
+    });
+
+    function crc32(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r[t])];return(-1^n)>>>0}
+</script>
+
+</body>
+</html>
