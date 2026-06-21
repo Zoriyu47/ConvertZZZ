@@ -15,16 +15,59 @@
       
         /* ================= PALETA DE COLORES GLOBAL (PÚRPURA PREMIUM) ================= */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #a855f7; 
+            --bg-color: #150a18;
+            --card-bg: #26112c;
+            --primary: #da3cbf; 
             --primary-hover: #9333ea;
-            --success: #10b981;
-            --success-hover: #059669;
-            --text: #f8fafc;
-            --text-muted: #64748b;
-            --border: #334155;
-            --input-bg: #0f172a;
+            --success: #69ceac;
+            --success-hover: #0b7050;
+            --text: #ae7bdf;
+            --text-muted: #252525;
+            --border: #c237c7;
+            --input-bg: #f560e8;
+             --ttl-color: #f0f0f0;
+        }
+
+           :root {
+            --bg-color: #ceaef3;
+            --card-bg: #dca0ec;
+            --primary: #da3cbf; 
+            --primary-hover: #99359c;
+            --success: #8627a3;
+            --success-hover: #5ad1ab;
+            --text: #884ac2;
+               --text-muted: #572492;
+            --border: #bf6ad6;
+            --input-bg: #d78eeb;
+            --ttl-color: #f0f0f0;
+        }
+
+        :root {
+            --bg-color: #953ef8;
+            --card-bg: #dca0ec;
+            --primary: #da3cbf; 
+            --primary-hover: #99359c;
+            --success: #8627a3;
+            --success-hover: #5ad1ab;
+            --text: #884ac2;
+               --text-muted: #572492;
+            --border: #bf6ad6;
+            --input-bg: #d78eeb;
+            --ttl-color: #f0f0f0;
+        }
+
+          :root {
+            --bg-color: #130c33;
+            --card-bg: #190f3b;
+            --primary: #da3cbf; 
+            --primary-hover: #99359c;
+            --success: #8627a3;
+            --success-hover: #5ad1ab;
+            --text: #884ac2;
+               --text-muted: #987ee0;
+            --border: #bf6ad6;
+            --input-bg: #d78eeb;
+            --ttl-color: #f0f0f0;
         }
 
         body {
@@ -43,7 +86,7 @@
         /* ================= BARRA DE NAVEGACIÓN SUPERIOR ================= */
         .navbar {
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
+            background: var(--card-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
@@ -196,7 +239,7 @@
    /* --- Estilos para el botón de hamburguesa (Oculto por defecto) --- */
 .menu-toggle {
   display: none;
-  background: #2563eb;
+  background: var(--primary);
   color: white;
   border: none;
   font-size: 1.5rem;
@@ -222,8 +265,8 @@
     position: fixed;
     top: 70px;
     right: 15px;
-    background: #1e293b; /* Fondo oscuro a juego con tu suite */
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--card-bg); /* Fondo oscuro a juego con tu suite */
+    border: 1px solid var(--border);
     padding: 16px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
@@ -288,11 +331,11 @@ document.addEventListener('click', function(event) {
 
     <div class="main-container">
 
-        <h1>Creative Toolbox </h1>
+        <h1 style="color: var(--ttl-color);">Creative Toolbox </h1>
         <br>
 
         <section id="converter" class="tool-section active">
-            <h1><i class="fi fi-sr-refresh"></i> Convertir formatos de Imágenes</h1>
+            <h1 style="color: var(--ttl-color);"><i class="fi fi-sr-refresh"></i> Convertir formatos de Imágenes</h1>
             <p class="subtitle">Soporta .jfif, .png, .webp, .avif, .bmp y .tiff de forma nativa.</p>
 
             <div style="text-align:center;">
@@ -320,11 +363,11 @@ document.addEventListener('click', function(event) {
 
 
         <section id="cropper" class="tool-section">
-            <h1><i class="fi fi-sr-scissors"></i> Recortar Imágenes</h1>
+            <h1 style="color: var(--ttl-color);"><i class="fi fi-sr-scissors"></i> Recortar Imágenes</h1>
             <p class="subtitle">Selecciona, arrastra y recorta tus recursos con precisión de píxel.</p>
 
             <div class="workspace" id="crop-workspace">
-                <div id="crop-drop-zone" style="padding: 3rem; text-align: center; cursor: pointer; width:100%;">
+                <div id="crop-drop-zone" style="padding: 3rem; text-align: center; cursor: pointer; width:100%; background:var(--card-bg);">
                     <input type="file" id="crop-file-input" accept="image/*" style="display: none;">
                     <span style="font-size: 3rem;"><i class="fi fi-ss-tool-crop"></i></span>
                     <p style="margin: 0.5rem 0 0; color: var(--text);"><i class="fi fi-sr-picture"></i> Haz clic o arrastra una imagen para empezar</p>
@@ -348,7 +391,7 @@ document.addEventListener('click', function(event) {
 
 
         <section id="compressor" class="tool-section">
-            <h1><i class="fi fi-sr-compress"></i> Comprimir y Redimensionar</h1>
+            <h1 style="color: var(--ttl-color);"><i class="fi fi-sr-compress"></i> Comprimir y Redimensionar</h1>
             <p class="subtitle">Optimiza el tamaño y las dimensiones de tus imágenes en un milisegundo a 300 DPI.</p>
 
             <div class="suite-drop-zone" id="comp-drop-zone">
@@ -709,10 +752,10 @@ document.addEventListener('click', function(event) {
 }</style>
     
            <div class="palette-container">
-  <h2>Extraer y Seleccionar de Paletas CSS</h2>
+  <h2 style="color: var(--ttl-color);">Extraer y Seleccionar de Paletas CSS</h2>
   <p>Sube una imagen para extraer su paleta dominante o usa los selectores manuales para afinar tus variables.</p>
 
-  <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" style="background:#0f172a;">
+  <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" style="background: var(--card-bg);">
     <p><i class="fi fi-sr-picture"></i> Arrastra una imagen aquí o haz clic para subir</p>
     <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleImage(this.files[0])">
     <img id="preview-img" style="display:none; max-height: 150px; border-radius: 8px; margin-top: 10px;">
@@ -760,15 +803,15 @@ document.addEventListener('click', function(event) {
   <div class="css-output-wrapper">
     <pre><code id="css-code">/* Sube una imagen o cambia los colores para generar el código */</code></pre>
     <button onclick="copyCSS()" class="btn-copy" style="border-radius: 6px;
-    background: var(--bg-color);
-    color: var(--text);
+    background: var(--primary);
+    color:white;
     border: none;
     padding: 10px 20px;"><i class="fi fi-ss-copy-alt"></i> Copiar Variables CSS</button>
   </div>
 
   <div class="palette-image-wrapper" style="margin-top: 20px; text-align: center;">
   <h3><i class="fi fi-sr-picture"></i> Imagen de Paleta para arrastrar a Canva/PowerPoint</h3>
-  <p style="font-size: 0.85rem; color: #94a3b8;">Haz clic derecho para guardar o arrástrala directo a tus diapositivas</p>
+  <p style="font-size: 0.85rem; color: var(--text-muted);">Haz clic derecho para guardar o arrástrala directo a tus diapositivas</p>
   <img id="palette-render-img" alt="Paleta de Colores Generada" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 100%;">
 </div>
 
