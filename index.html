@@ -561,7 +561,24 @@ document.addEventListener('click', function(event) {
             reader.onload = function(event) {
                 cropWorkspace.innerHTML = `<img id="image-to-crop" src="${event.target.result}">`;
                 const image = document.getElementById('image-to-crop');
-                cropper = new Cropper(image, { viewMode: 1, autoCropArea: 0.8, responsive: true });
+                const cropper = new Cropper(image, {
+  // Define el modo de arrastre: 'move' permite mover y hacer zoom a la imagen
+  dragMode: 'move', 
+  
+  // Mantiene el aspecto pero permite interactuar cómodamente
+  aspectRatio: 1, // O la opción que elija (16:9, libre, etc.)
+  
+  // Desactiva que el usuario cree cajas nuevas por accidente al tocar el fondo
+  autoCropArea: 0.8, 
+  
+  // Configuraciones clave para móviles:
+  touchDragZoom: true,  // Permite hacer zoom con dos dedos en el cel
+  mouseWheelZoom: true, // Zoom con la rueda del mouse en PC
+  
+  ready() {
+    // Aquí puedes meter estilos extras cuando ya esté cargado
+  }
+});
                 btnCrop.style.display = 'inline-block';
             };
             reader.readAsDataURL(file);
