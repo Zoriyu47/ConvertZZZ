@@ -305,6 +305,8 @@
         <button class="nav-btn active" onclick="switchTool('converter')"><i class="fi fi-sr-refresh"></i> Convertir</button>
         <button class="nav-btn" onclick="switchTool('cropper')"> <i class="fi fi-sr-scissors"></i> Recortar</button>
         <button class="nav-btn" onclick="switchTool('compressor')"><i class="fi fi-sr-mode-portrait"></i> Redimensionar (CM)</button>
+        <button class="nav-btn" onclick="switchTool('imprimible')"><i class="fi fi-sr-mode-portrait"></i> Imprimible</button>
+        
         <button class="nav-btn" onclick="switchTool('palette-generator')"><i class="fi fi-sr-palette"></i> Generar de Paleta</button>
 </div>
         <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()">
@@ -445,6 +447,336 @@ document.addEventListener('click', function(event) {
             </div>
         </section>
 
+<section id="imprimible" class="tool-section" style="    width: 90vw;
+    position: absolute;
+    left: 1vw;">
+            <h1 style="color: var(--ttl-color);"><i class="fi fi-sr-refresh"></i> Listo para imprimir Imágenes</h1>
+            <p class="subtitle">montar imagenes en un canvas</p>
+
+<div class="controls">
+  <label>Ancho del Sticker (cm):</label>
+  <input type="number" id="sticker-width" value="5" step="0.5">
+  
+  <input type="file" id="sticker-files" accept="image/*" multiple>
+</div>
+<br>
+<br>
+  <div class="controls">
+  
+  <button id="btn-print-canvas" class="suite-btn">
+    <i class="fi fi-sr-print"></i> Imprimir Planilla
+  </button>
+</div>
+<div class="canvas-carta" id="canvas-carta">
+  </div>
+
+
+  <style>
+    .canvas-carta {
+  width: 21.59cm;
+  height: 27.94cm;
+  background: white;
+  margin: 20px auto;
+  padding: 1cm; /* Margen de seguridad para que la impresora no muerda los stickers */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  display: flex;
+  flex-wrap: wrap; /* Hace que los stickers que no quepan bajen solos a la siguiente fila */
+  gap: 0.3cm;     /* Espacio de separación entre stickers para poder meter la tijera */
+  align-content: flex-start;
+}
+
+
+
+/* Contenedor del sticker */
+.sticker-wrapper {
+  position: relative !important; /* Permite posicionar el input encima */
+  display: inline-block;
+}
+
+/* El input individual que cambia el tamaño */
+.individual-size-input {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 55px;
+  padding: 2px 4px;
+  font-size: 11px;
+  text-align: center;
+  border-radius: 4px;
+  border: 1px solid #10b981; /* Combinando con tu color verde de botones */
+  background: #1e1e2f;       /* Fondo oscuro como tu suite */
+  color: white;
+  opacity: 0;                /* Oculto por defecto */
+  transition: opacity 0.2s ease, top 0.2s ease;
+  z-index: 10;
+}
+
+/* Mostrar el input solo cuando pasas el mouse por encima del sticker */
+.sticker-wrapper:hover .individual-size-input,
+.sticker-wrapper:focus-within .individual-size-input {
+  opacity: 1;
+  top: -22px; /* Sube sutilmente con una animación suave */
+}
+#btn-print-canvas {
+  margin-bottom: 25px; /* Crea una separación elegante con el lienzo blanco */
+}
+
+/* Forzamos a que aparezca exactamente con el mismo truco del input */
+.delete-sticker-btn {
+  position: absolute !important;
+  /* Lo ponemos arriba, justo al lado derecho de donde sale el input de tamaño */
+  top: 0px !important; 
+  right: 5px !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 4px !important; /* Cuadradito sutil para que combine con el input */
+  background: #ef4444 !important; /* Rojo vibrante */
+  color: white !important;
+  border: none !important;
+  font-size: 12px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  
+  /* Animación idéntica a tu input de tamaño */
+  opacity: 0;
+  transition: opacity 0.2s ease, top 0.2s ease;
+  z-index: 9999 !important; /* Capa super alta */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4) !important;
+}
+
+/* Cuando pases el mouse, sube y se muestra igualito que tu globito de tamaño */
+.sticker-wrapper:hover .delete-sticker-btn,
+.sticker-wrapper:focus-within .delete-sticker-btn {
+  opacity: 1 ;
+  top: -22px !important; /* Sube exactamente a la misma altura que tu input */
+}
+
+.delete-sticker-btn:hover {
+  background: #b91c1c !important; /* Rojo más oscuro al tocarlo */
+}
+
+/* ===================================================
+   ajuste de impresion
+   =================================================== */
+@media print {
+  /* 1. Ocultar absolutamente toda la interfaz por defecto */
+  body * {
+    visibility: hidden !important;
+  }
+
+  .delete-sticker-btn {
+    display: none !important; /* Nunca saldrá en el PDF impreso */
+  }
+
+  /* 2. Resatear contenedores padres para que colapsen y no ocupen espacio físico (adiós margen superior) */
+  html, body, .main-container, .tool-section, #imprimible {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    background: #ffffff !important;
+  }
+
+  /* 3. Hacer visible ÚNICAMENTE el lienzo y todo su contenido interior */
+  .canvas-carta, .canvas-carta * {
+    visibility: visible !important;
+  }
+
+  /* 4. Forzar el posicionamiento milimétrico de la hoja blanca arriba a la izquierda */
+  .canvas-carta {
+    display: flex !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 !important;
+    padding: 1cm !important; /* Margen interno para que no se corten los stickers */
+    width: 21.59cm !important;
+    height: 27.94cm !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+
+    /* Control estricto de páginas */
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* 5. Ajustes específicos que ya tenías para los elementos internos */
+  .individual-size-input {
+    display: none !important; /* Desaparecen por completo los globos oscuros en el papel */
+  }
+
+  .sticker-wrapper {
+    position: static !important; /* Resetea el flujo para que no altere la impresión */
+  }
+.sticker-tools {
+    display: none !important;
+  }
+  /* 6. Quitar los márgenes nativos del cuadro de diálogo de Chrome */
+  @page {
+    size: letter;
+    margin: 0 !important;
+  }
+}
+
+
+
+/* =======================
+correccion de estilos del
+============================**/
+
+.sticker-wrapper {
+  position: relative !important;
+  display: inline-block;
+}
+
+/* LA BARRA QUE CONTIENE AMBOS CONTROLES */
+.sticker-tools {
+  position: absolute !important;
+  width: 6.5em;
+  top: 0px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important; /* Centrado perfecto garantizado */
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important; /* Espacio entre el input y el botón */
+  opacity: 0 !important;
+  transition: opacity 0.2s ease, top 0.2s ease;
+  z-index: 9999 !important;
+}
+
+/* Mostrar la barra al pasar el mouse por el sticker */
+.sticker-wrapper:hover .sticker-tools,
+.sticker-wrapper:focus-within .sticker-tools {
+  opacity: 1 !important;
+  top: -5px !important; /* Sube flotando limpiamente */
+}
+
+/* ESTILO DEL INPUT (Se mantiene genial como lo tenías) */
+.individual-size-input {
+  width: 50px !important;
+  padding: 2px 4px !important;
+  font-size: 11px !important;
+  text-align: center !important;
+  border-radius: 4px !important;
+  border: 1px solid #10b981 !important;
+  background: #1e1e2f !important;
+  color: white !important;
+  box-sizing: border-box !important;
+}
+
+/* ESTILO DEL BOTÓN ELIMINAR (Ahora hereda el flujo de la barra) */
+.delete-sticker-btn {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 4px !important;
+  background: #ef4444 !important; /* Rojo */
+  color: white !important;
+  border: none !important;
+  font-size: 10px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+}
+
+.delete-sticker-btn:hover {
+  background: #dc2626 !important;
+}
+
+/* Ocultar la barra completa en la impresión */
+@media print {
+  .sticker-tools {
+    display: none !important;
+  }
+}
+  </style>
+
+ <script>
+ document.getElementById('sticker-files').addEventListener('change', function(e) {
+  const files = e.target.files;
+  const canvas = document.getElementById('canvas-carta');
+  
+  // Cambia cualquier coma por punto antes de aplicarlo al CSS
+  let sizeCm = document.getElementById('sticker-width').value;
+  sizeCm = sizeCm.replace(',', '.'); 
+
+  // Recorrer cada sticker subido
+  for (let i = 0; i < files.length; i++) {
+    const reader = new FileReader();
+      
+    reader.onload = function(event) {
+      const stickerWrapper = document.createElement('div');
+      stickerWrapper.className = 'sticker-wrapper';
+
+      const img = document.createElement('img');
+      img.src = event.target.result;
+      img.style.width = `${sizeCm}cm`;
+      img.style.height = 'auto';
+
+      /* ===================================================
+         🛠️ ENVOLTORIO UNIFICADO: LA MINI BARRA DE HERRAMIENTAS
+         =================================================== */
+      const toolsContainer = document.createElement('div');
+      toolsContainer.className = 'sticker-tools';
+
+      // Crear el input de tamaño individual
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.className = 'individual-size-input';
+      sizeInput.value = sizeCm;
+      sizeInput.step = '0.1';
+      sizeInput.min = '1';
+      sizeInput.addEventListener('input', function() {
+          let currentSize = sizeInput.value.toString().replace(',', '.');
+          if (currentSize) img.style.width = `${currentSize}cm`;
+      });
+
+      // Crear el botón de eliminar
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'delete-sticker-btn';
+      deleteBtn.innerHTML = '✕';
+      deleteBtn.title = 'Eliminar sticker';
+      deleteBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          stickerWrapper.remove();
+      });
+
+      // Meter el input y el botón DENTRO de la barra de herramientas
+      toolsContainer.appendChild(sizeInput);
+      toolsContainer.appendChild(deleteBtn);
+
+      /* =================================================== */
+
+      // Armar la estructura final en el lienzo
+      stickerWrapper.appendChild(img);
+      stickerWrapper.appendChild(toolsContainer); // Inyectamos la barra junta
+      
+      canvas.appendChild(stickerWrapper);
+    }; // <-- Aquí se cierra correctamente la función onload
+    
+    reader.readAsDataURL(files[i]);
+  } // <-- Aquí se cierra el ciclo for
+});
+
+function imprimirPlanilla() {
+    window.print(); // Abre la ventana nativa de impresión del sistema
+}
+
+document.getElementById('btn-print-canvas').addEventListener('click', function() {
+    window.print();
+});
+ </script>
+</section>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
@@ -557,11 +889,17 @@ document.addEventListener('click', function(event) {
         cropFileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) loadImage(e.target.files[0]); });
 
         function loadImage(file) {
+
+          if (cropper) {
+        cropper.destroy();
+    }
+    
+
             const reader = new FileReader();
             reader.onload = function(event) {
                 cropWorkspace.innerHTML = `<img id="image-to-crop" src="${event.target.result}">`;
                 const image = document.getElementById('image-to-crop');
-                const cropper = new Cropper(image, {
+                 cropper = new Cropper(image, {
   // Define el modo de arrastre: 'move' permite mover y hacer zoom a la imagen
   dragMode: 'move', 
   
