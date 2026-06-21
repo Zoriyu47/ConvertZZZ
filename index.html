@@ -3,529 +3,896 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ConvertZZZ - Convertidor Universal de Imágenes</title>
+    <title>Creative Toolbox - Suite de Medios</title>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+  <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/4.0.0/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+    
     <style>
+
+      
+        /* ================= PALETA DE COLORES GLOBAL (PÚRPURA PREMIUM) ================= */
         :root {
-            --bg-color: #121214;
-            --surface-color: #1a1a1e;
-            --primary-color: #ec4899; 
-            --primary-hover: #db2777;
-            --success-color: #10b981;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #a855f7; 
+            --primary-hover: #9333ea;
+            --success: #10b981;
             --success-hover: #059669;
-            --text-color: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --border-color: #2c2c35;
-            --input-bg: #27272a;
+            --text: #f8fafc;
+            --text-muted: #64748b;
+            --border: #334155;
+            --input-bg: #0f172a;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
             margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
             flex-direction: column;
+            align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
         }
 
-        /* ================= ENCABEZADO PREMIUM ================= */
-        .app-header {
-            background-color: rgba(26, 26, 30, 0.8);
+        /* ================= BARRA DE NAVEGACIÓN SUPERIOR ================= */
+        .navbar {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.75rem 2rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .brand-logo {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-            color: white;
-            font-size: 1.1rem;
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
-        }
-
-        .brand-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            background: linear-gradient(to right, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-tag {
-            font-size: 0.75rem;
-            background-color: rgba(236, 72, 153, 0.1);
-            color: var(--primary-color);
-            padding: 0.3rem 0.7rem;
-            border-radius: 20px;
-            border: 1px solid rgba(236, 72, 153, 0.2);
-            font-weight: 600;
-        }
-
-        /* ================= ESTRUCTURA PRINCIPAL ================= */
-        .main-content {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem 1rem;
-        }
-
-        .container {
-            background-color: var(--surface-color);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 650px;
-            text-align: center;
-            border: 1px solid var(--border-color);
-            animation: fadeIn 0.4s ease;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin-top: 0;
-            margin-bottom: 0.5rem;
-            color: #fff;
-        }
-
-        p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* ================= SELECTOR DE FORMATO ================= */
-        .format-selector-box {
-            display: flex;
-            align-items: center;
             justify-content: center;
             gap: 1rem;
-            margin-bottom: 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            padding: 0.75rem 1rem;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            display: inline-flex;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .format-selector-box label {
-            font-size: 0.9rem;
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: var(--text-muted);
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
             font-weight: 600;
-            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .select-style {
-            background-color: var(--input-bg);
+        .nav-btn:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-btn.active {
             color: white;
-            border: 1px solid var(--border-color);
-            padding: 0.4rem 1.5rem 0.4rem 0.75rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s;
+            background: var(--primary);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
         }
 
-        .select-style:focus {
-            border-color: var(--primary-color);
+        /* ================= CONTENEDOR CENTRAL ================= */
+        .main-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
         }
 
-        /* ================= DRAG & DROP Y LISTA ================= */
-        .drop-zone {
-            border: 2px dashed var(--primary-color);
-            padding: 2.5rem 1.5rem;
+        .tool-section {
+            display: none; 
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .tool-section.active {
+            display: block; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { font-size: 1.8rem; margin-top: 0; margin-bottom: 0.5rem; text-align: center; color: white; }
+        p.subtitle { color: var(--text-muted); text-align: center; margin-bottom: 2rem; font-size: 0.95rem; }
+
+        /* ================= ELEMENTOS DE INTERFAZ REUTILIZABLES ================= */
+        .suite-drop-zone {
+            border: 2px dashed var(--primary);
             border-radius: 12px;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
             cursor: pointer;
-            background-color: rgba(236, 72, 153, 0.01);
-            transition: all 0.3s ease;
+            background: rgba(168, 85, 247, 0.02);
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
         }
 
-        .drop-zone:hover, .drop-zone.drag-over {
-            background-color: rgba(236, 72, 153, 0.06);
+        .suite-drop-zone:hover, .suite-drop-zone.drag-over {
+            background: rgba(168, 85, 247, 0.06);
             border-color: var(--primary-hover);
         }
 
-        .drop-zone p {
-            margin: 0;
-            color: var(--text-color);
-            font-weight: 500;
-        }
-
-        #file-input { display: none; }
-
-        .global-actions {
-            display: none;
-            margin-bottom: 1.5rem;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .file-list {
-            max-height: 350px;
-            overflow-y: auto;
-            margin-top: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            padding-right: 5px;
-        }
-
-        .file-list::-webkit-scrollbar { width: 6px; }
-        .file-list::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-
-        .file-item {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            animation: fadeIn 0.3s ease;
-            text-align: left;
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            overflow: hidden;
-        }
-
-        .file-info img {
-            width: 45px;
-            height: 45px;
-            border-radius: 4px;
-            object-fit: cover;
-            background: #222;
-        }
-
-        .file-name {
-            font-size: 0.9rem;
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 250px;
-        }
-
-        .file-format {
-            font-size: 0.75rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: inline-block;
-            margin-top: 0.25rem;
-        }
-
-        .btn {
-            background-color: var(--primary-color);
+        .suite-btn {
+            background-color: var(--primary);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
-            font-size: 0.85rem;
+            padding: 0.65rem 1.5rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s, transform 0.1s;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
         }
 
-        .btn:hover { background-color: var(--primary-hover); }
-        .btn:active { transform: scale(0.98); }
+        .suite-btn:hover { background-color: var(--primary-hover); }
+        .suite-btn:active { transform: scale(0.98); }
+        
+        .suite-btn-success { background-color: var(--success); width: 100%; padding: 0.8rem; font-size: 1rem; border-radius: 10px; }
+        .suite-btn-success:hover { background-color: var(--success-hover); }
+        .suite-btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+        .suite-btn-secondary:hover { background: var(--border); }
 
-        .btn-success {
-            background-color: var(--success-color);
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            width: 100%;
-            box-sizing: border-box;
-            border-radius: 10px;
+        .suite-select {
+            background-color: var(--input-bg);
+            color: white;
+            border: 1px solid var(--border);
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: none;
         }
 
-        .btn-success:hover { background-color: var(--success-hover); }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ================= ESTILOS ESPECÍFICOS: COMPRESOR ================= */
+        .control-group { margin-bottom: 1.5rem; text-align: left; }
+        .control-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.95rem; }
+        .slider-container input[type="range"] { width: 100%; accent-color: var(--primary); }
+        
+        .dimensions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+        .dimensions-grid input[type="number"] {
+            width: 100%; background: var(--input-bg); border: 1px solid var(--border);
+            color: white; padding: 0.5rem; border-radius: 6px; box-sizing: border-box; outline: none;
         }
+
+        .stats-box {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+            background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;
+        }
+        .stat-val { font-size: 1.2rem; font-weight: 700; margin-top: 0.25rem; }
+
+        /* ================= ESTILOS ESPECÍFICOS: CONVERTIDOR ================= */
+        .format-selector-box { display: inline-flex; align-items: center; gap: 1rem; margin-bottom: 2rem; background: rgba(0,0,0,0.1); padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid var(--border); }
+        .file-list { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
+        .file-item { background: rgba(0,0,0,0.15); padding: 0.75rem 1rem; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 1rem; text-align: left; }
+        .file-info { display: flex; align-items: center; gap: 1rem; overflow: hidden; }
+        .file-info img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
+        .file-name { font-size: 0.9rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 230px; }
+        .file-format { font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* ================= ESTILOS ESPECÍFICOS: RECORTADOR ================= */
+        .workspace { width: 100%; max-height: 400px; background: #0b0f19; border-radius: 12px; overflow: hidden; display: flex; justify-content: center; align-items: center; border: 2px dashed var(--border); margin-bottom: 1.5rem; }
+        .workspace img { max-width: 100%; max-height: 400px; display: block; }
+        .controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        #result-container { display: none; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
+        #result-preview { max-width: 100%; border-radius: 8px; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
+  
+    <nav class="navbar">
+         <img src="/media/logo-zorizori.png" alt="Zoriyu" style="width: 40px;
+ opacity="0.15" transform="rotate(15deg)">
+        <button class="nav-btn active" onclick="switchTool('converter')"><i class="fi fi-sr-refresh"></i> Convertir</button>
+        <button class="nav-btn" onclick="switchTool('cropper')"> <i class="fi fi-sr-scissors"></i> Recortar</button>
+        <button class="nav-btn" onclick="switchTool('compressor')"><i class="fi fi-sr-mode-portrait"></i> Redimensionar (CM)</button>
+        <button class="nav-btn" onclick="switchTool('palette-generator')"><i class="fi fi-sr-palette"></i> Generar de Paleta</button>
 
-<header class="app-header">
-    <div class="brand">
-        <div class="brand-logo"><img src="media/logo-zorizori.png" alt="Zoriyu" style="width: 25px; height: 25px;"></div>
-        <span class="brand-name">ConvertZZZ</span>
-    </div>
-    <div class="header-tag">100% Local y Seguro</div>
-</header>
+    </nav>
 
-<main class="main-content">
-    <div class="container">
-        <h1>Convertidor Universal de Imágenes</h1>
-        <p>Soporta .jfif, .png, .webp, .avif, .bmp y .tiff de forma nativa.</p>
+    <div class="main-container">
 
-        <div class="format-selector-box">
-            <label for="output-format">Convertir archivos a:</label>
-            <select id="output-format" class="select-style">
-                <option value="jpeg">JPG (.jpg)</option>
-                <option value="png">PNG (.png)</option>
-                <option value="webp">WebP (.webp)</option>
-            </select>
-        </div>
+        <h1>Creative Toolbox </h1>
+        <br>
 
-        <div class="drop-zone" id="drop-zone">
-            <p>Arrastra tus imágenes aquí o <span style="color: var(--primary-color); text-decoration: underline;">haz clic para buscar</span></p>
-            <input type="file" id="file-input" accept="image/*" multiple>
-        </div>
+        <section id="converter" class="tool-section active">
+            <h1><i class="fi fi-sr-refresh"></i> Convertir formatos de Imágenes</h1>
+            <p class="subtitle">Soporta .jfif, .png, .webp, .avif, .bmp y .tiff de forma nativa.</p>
 
-        <div class="global-actions" id="global-actions">
-            <button id="download-all-btn" class="btn btn-success">Descargar todo en un .ZIP</button>
-        </div>
-
-        <div class="file-list" id="file-list"></div>
-    </div>
-</main>
-
-<script>
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('file-input');
-    const fileListContainer = document.getElementById('file-list');
-    const globalActions = document.getElementById('global-actions');
-    const downloadAllBtn = document.getElementById('download-all-btn');
-    const outputFormatSelect = document.getElementById('output-format');
-
-    let convertedFiles = [];
-    let currentFilesScope = []; // Guardamos referencia de los archivos subidos para permitir recambios
-
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    fileInput.addEventListener('change', (e) => {
-        if (e.target.files.length > 0) {
-            currentFilesScope = Array.from(e.target.files);
-            processAllFiles();
-        }
-    });
-
-    // Si el usuario cambia el formato en el selector, re-procesamos automáticamente las imágenes cargadas
-    outputFormatSelect.addEventListener('change', () => {
-        if (currentFilesScope.length > 0) processAllFiles();
-    });
-
-    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-    dropZone.addEventListener('dragleave', () => { dropZone.classList.remove('drag-over'); });
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('drag-over');
-        if (e.dataTransfer.files.length > 0) {
-            currentFilesScope = Array.from(e.dataTransfer.files);
-            processAllFiles();
-        }
-    });
-
-    function processAllFiles() {
-        fileListContainer.innerHTML = '';
-        convertedFiles = [];
-        globalActions.style.display = 'none';
-        
-        const targetFormat = outputFormatSelect.value; // 'jpeg', 'png' o 'webp'
-        const fileExt = targetFormat === 'jpeg' ? 'jpg' : targetFormat;
-
-        currentFilesScope.forEach(file => {
-            if (!file.type.startsWith('image/') && !file.name.endsWith('.jfif')) return;
-
-            const reader = new FileReader();
-            
-            reader.onload = function(event) {
-                const img = new Image();
-                
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-
-                    // Si elegimos PNG, permitimos transparencia completa.
-                    // Si elegimos JPG o WEBP, forzamos fondo blanco de respaldo.
-                    if (targetFormat !== 'png') {
-                        ctx.fillStyle = '#FFFFFF';
-                        ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    }
-                    
-                    ctx.drawImage(img, 0, 0);
-                    
-                    // Convertir dinámicamente al tipo MIME seleccionado
-                    const dataUrl = canvas.toDataURL(`image/${targetFormat}`, 0.9);
-                    const originalExtension = file.name.split('.').pop();
-                    const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'imagen';
-                    const newFileName = `${originalName}.${fileExt}`;
-
-                    convertedFiles.push({
-                        name: newFileName,
-                        url: dataUrl
-                    });
-
-                    createFileRow(newFileName, dataUrl, originalExtension);
-
-                    if (convertedFiles.length > 1) {
-                        globalActions.style.display = 'block';
-                    }
-                };
-                img.src = event.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-    }
-
-    function createFileRow(fileName, url, originalExtension) {
-        const item = document.createElement('div');
-        item.className = 'file-item';
-
-        item.innerHTML = `
-            <div class="file-info">
-                <img src="${url}" alt="preview">
-                <div>
-                    <div class="file-name" title="${fileName}">${fileName}</div>
-                    <span class="file-format">${originalExtension}</span>
+            <div style="text-align:center;">
+                <div class="format-selector-box">
+                    <label for="output-format" style="font-weight:600; font-size:0.9rem;">Convertir archivos a:</label>
+                    <select id="output-format" class="suite-select">
+                        <option value="jpeg">JPG (.jpg)</option>
+                        <option value="png">PNG (.png)</option>
+                        <option value="webp">WebP (.webp)</option>
+                    </select>
                 </div>
             </div>
-            <a class="btn" href="${url}" download="${fileName}">Descargar</a>
-        `;
 
-        fileListContainer.appendChild(item);
-    }
+            <div class="suite-drop-zone" id="conv-drop-zone">
+                <p><i class="fi fi-sr-picture"></i>  Arrastra tus imágenes aquí o <span style="color: var(--primary); text-decoration: underline;">haz clic para buscar</span></p>
+                <input type="file" id="conv-file-input" accept="image/*" multiple style="display: none;">
+            </div>
 
-    // Código del generador de ZIP local impecable
-    downloadAllBtn.addEventListener('click', async () => {
-        if (convertedFiles.length === 0) return;
+            <div id="global-actions" style="display: none; margin-bottom: 1.5rem;">
+                <button id="download-all-btn" class="suite-btn suite-btn-success">Descargar todo en un .ZIP</button>
+            </div>
 
-        try {
-            let zipData = [];
-            let localHeaderOffset = 0;
-            let centralDirectoryData = [];
-            let centralDirectoryOffset = 0;
+            <div class="file-list" id="file-list"></div>
+        </section>
 
-            for (let file of convertedFiles) {
-                const response = await fetch(file.url);
-                const arrayBuffer = await response.arrayBuffer();
-                const fileBytes = new Uint8Array(arrayBuffer);
-                const nameBytes = new TextEncoder().encode(file.name);
-                
-                const time = 0x5460; 
-                const date = 0x5Cbc; 
-                const crc = crc32(fileBytes);
 
-                const localHeader = new Uint8Array(30 + nameBytes.length);
-                const viewLH = new DataView(localHeader.buffer);
-                
-                viewLH.setUint32(0, 0x04034b50, true);
-                viewLH.setUint16(4, 10, true);
-                viewLH.setUint16(6, 0, true);
-                viewLH.setUint16(8, 0, true);
-                viewLH.setUint16(10, time, true);
-                viewLH.setUint16(12, date, true);
-                viewUint32 = viewLH.setUint32(14, crc, true);
-                viewLH.setUint32(18, fileBytes.length, true);
-                viewLH.setUint32(22, fileBytes.length, true);
-                viewLH.setUint16(26, nameBytes.length, true);
-                viewLH.setUint16(28, 0, true);
-                localHeader.set(nameBytes, 30);
+        <section id="cropper" class="tool-section">
+            <h1><i class="fi fi-sr-scissors"></i> Recortar Imágenes</h1>
+            <p class="subtitle">Selecciona, arrastra y recorta tus recursos con precisión de píxel.</p>
 
-                zipData.push(localHeader);
-                zipData.push(fileBytes);
+            <div class="workspace" id="crop-workspace">
+                <div id="crop-drop-zone" style="padding: 3rem; text-align: center; cursor: pointer; width:100%;">
+                    <input type="file" id="crop-file-input" accept="image/*" style="display: none;">
+                    <span style="font-size: 3rem;"><i class="fi fi-ss-tool-crop"></i></span>
+                    <p style="margin: 0.5rem 0 0; color: var(--text);"><i class="fi fi-sr-picture"></i> Haz clic o arrastra una imagen para empezar</p>
+                </div>
+            </div>
 
-                const cdRecord = new Uint8Array(46 + nameBytes.length);
-                const viewCD = new DataView(cdRecord.buffer);
+            <div class="controls">
+                <button class="suite-btn suite-btn-secondary" id="btn-free">Libre</button>
+                <button class="suite-btn suite-btn-secondary" id="btn-11">1:1 (Cuadrado)</button>
+                <button class="suite-btn suite-btn-secondary" id="btn-169">16:9 (Video)</button>
+                <button class="suite-btn" id="btn-crop" style="display: none; background: #10b981;">Recortar Selección</button>
+            </div>
 
-                viewCD.setUint32(0, 0x02014b50, true);
-                viewCD.setUint16(4, 20, true);
-                viewCD.setUint16(6, 10, true);
-                viewCD.setUint16(8, 0, true);
-                viewCD.setUint16(10, 0, true);
-                viewCD.setUint16(12, time, true);
-                viewCD.setUint16(14, date, true);
-                viewCD.setUint32(16, crc, true);
-                viewCD.setUint32(20, fileBytes.length, true);
-                viewCD.setUint32(24, fileBytes.length, true);
-                viewCD.setUint16(28, nameBytes.length, true);
-                viewCD.setUint16(30, 0, true);
-                viewCD.setUint16(32, 0, true);
-                viewCD.setUint16(34, 0, true);
-                viewCD.setUint16(36, 0, true);
-                viewCD.setUint32(38, 0, true);
-                viewCD.setUint32(42, localHeaderOffset, true);
-                cdRecord.set(nameBytes, 46);
+            <div id="result-container">
+                <h3>Resultado:</h3>
+                <img id="result-preview" alt="Imagen recortada">
+                <br>
+                <a id="crop-download-btn" class="suite-btn" style="text-decoration: none;">Descargar Imagen</a>
+            </div>
+        </section>
 
-                centralDirectoryData.push(cdRecord);
-                localHeaderOffset += localHeader.length + fileBytes.length;
+
+        <section id="compressor" class="tool-section">
+            <h1><i class="fi fi-sr-compress"></i> Comprimir y Redimensionar</h1>
+            <p class="subtitle">Optimiza el tamaño y las dimensiones de tus imágenes en un milisegundo a 300 DPI.</p>
+
+            <div class="suite-drop-zone" id="comp-drop-zone">
+                <input type="file" id="comp-file-input" accept="image/jpeg, image/png, image/webp" style="display: none;">
+                <span style="font-size: 3rem;"><i class="fi fi-sr-mode-portrait"></i> </span>
+                <p style="margin: 0.5rem 0 0; color:var(--text);"> <i class="fi fi-sr-picture"></i> Arrastra o selecciona la imagen a optimizar</p>
+            </div>
+
+            <div id="editor-layout" style="display: none;">
+                <div class="control-group">
+                    <label for="quality-range">Calidad de compresión: <span id="quality-val">80</span>%</label>
+                    <div class="slider-container">
+                        <input type="range" id="quality-range" min="10" max="100" value="80">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label style="display: flex; justify-content: space-between; align-items: center;">
+                        <span>Redimensionar:</span>
+                        <select id="unit-select" class="suite-select">
+                            <option value="px">Píxeles (px)</option>
+                            <option value="cm">Centímetros (cm - 300 DPI)</option>
+                        </select>
+                    </label>
+                    <div class="dimensions-grid">
+                        <div>
+                            <span id="label-width" style="font-size: 0.85rem; color: var(--text-muted)">Ancho</span>
+                            <input type="number" id="img-width" step="any">
+                        </div>
+                        <div>
+                            <span id="label-height" style="font-size: 0.85rem; color: var(--text-muted)">Alto</span>
+                            <input type="number" id="img-height" step="any">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-box">
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted)">Peso Original</div>
+                        <div class="stat-val" id="weight-orig">-</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted)">Peso Estimado</div>
+                        <div class="stat-val" id="weight-dest" style="color: var(--success);">-</div>
+                    </div>
+                </div>
+
+                <div id="preview-area" style="text-align:center; margin-top:1.5rem;">
+                    <a id="comp-download-btn" class="suite-btn" style="background: var(--primary); text-decoration:none; display:inline-block; width:80%;">⬇️ Descargar Imagen Optimizada</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+
+    <script>
+        function switchTool(toolId) {
+            document.querySelectorAll('.tool-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(toolId).classList.add('active');
+            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => btn.getAttribute('onclick').includes(toolId));
+            if(activeBtn) activeBtn.classList.add('active');
+        }
+    </script>
+
+    <script>
+        const convDropZone = document.getElementById('conv-drop-zone');
+        const convFileInput = document.getElementById('conv-file-input');
+        const fileListContainer = document.getElementById('file-list');
+        const globalActions = document.getElementById('global-actions');
+        const downloadAllBtn = document.getElementById('download-all-btn');
+        const outputFormatSelect = document.getElementById('output-format');
+
+        let convertedFiles = [];
+        let currentFilesScope = [];
+
+        convDropZone.addEventListener('click', () => convFileInput.click());
+        convFileInput.addEventListener('change', (e) => { if (e.target.files.length > 0) { currentFilesScope = Array.from(e.target.files); processAllFiles(); } });
+        outputFormatSelect.addEventListener('change', () => { if (currentFilesScope.length > 0) processAllFiles(); });
+
+        convDropZone.addEventListener('dragover', (e) => { e.preventDefault(); convDropZone.classList.add('drag-over'); });
+        convDropZone.addEventListener('dragleave', () => { convDropZone.classList.remove('drag-over'); });
+        convDropZone.addEventListener('drop', (e) => { e.preventDefault(); convDropZone.classList.remove('drag-over'); if (e.dataTransfer.files.length > 0) { currentFilesScope = Array.from(e.dataTransfer.files); processAllFiles(); } });
+
+        function processAllFiles() {
+            fileListContainer.innerHTML = ''; convertedFiles = []; globalActions.style.display = 'none';
+            const targetFormat = outputFormatSelect.value;
+            const fileExt = targetFormat === 'jpeg' ? 'jpg' : targetFormat;
+
+            currentFilesScope.forEach(file => {
+                if (!file.type.startsWith('image/') && !file.name.endsWith('.jfif')) return;
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onload = function() {
+                        const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+                        canvas.width = img.width; canvas.height = img.height;
+                        if (targetFormat !== 'png') { ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+                        ctx.drawImage(img, 0, 0);
+                        const dataUrl = canvas.toDataURL(`image/${targetFormat}`, 0.9);
+                        const originalExtension = file.name.split('.').pop();
+                        const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || 'imagen';
+                        const newFileName = `${originalName}.${fileExt}`;
+                        convertedFiles.push({ name: newFileName, url: dataUrl });
+                        createFileRow(newFileName, dataUrl, originalExtension);
+                        if (convertedFiles.length > 1) globalActions.style.display = 'block';
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function createFileRow(fileName, url, originalExtension) {
+            const item = document.createElement('div'); item.className = 'file-item';
+            item.innerHTML = `<div class="file-info"><img src="${url}"><div class="file-name" title="${fileName}">${fileName}</div><span class="file-format">${originalExtension}</span></div></div><a class="suite-btn" href="${url}" download="${fileName}">Descargar</a>`;
+            fileListContainer.appendChild(item);
+        }
+
+        downloadAllBtn.addEventListener('click', async () => {
+            if (convertedFiles.length === 0) return;
+            try {
+                let zipData = [], localHeaderOffset = 0, centralDirectoryData = [], cdLength = 0;
+                for (let file of convertedFiles) {
+                    const response = await fetch(file.url); const arrayBuffer = await response.arrayBuffer(); const fileBytes = new Uint8Array(arrayBuffer);
+                    const nameBytes = new TextEncoder().encode(file.name); const crc = crc32(fileBytes);
+                    const localHeader = new Uint8Array(30 + nameBytes.length); const viewLH = new DataView(localHeader.buffer);
+                    viewLH.setUint32(0, 0x04034b50, true); viewLH.setUint16(4, 10, true); viewLH.setUint32(14, crc, true);
+                    viewLH.setUint32(18, fileBytes.length, true); viewLH.setUint32(22, fileBytes.length, true); viewLH.setUint16(26, nameBytes.length, true);
+                    localHeader.set(nameBytes, 30); zipData.push(localHeader); zipData.push(fileBytes);
+                    const cdRecord = new Uint8Array(46 + nameBytes.length); const viewCD = new DataView(cdRecord.buffer);
+                    viewCD.setUint32(0, 0x02014b50, true); viewCD.setUint16(4, 20, true); viewCD.setUint16(6, 10, true); viewCD.setUint32(16, crc, true);
+                    viewCD.setUint32(20, fileBytes.length, true); viewCD.setUint32(24, fileBytes.length, true); viewCD.setUint16(28, nameBytes.length, true);
+                    viewCD.setUint32(42, localHeaderOffset, true); cdRecord.set(nameBytes, 46); centralDirectoryData.push(cdRecord);
+                    localHeaderOffset += localHeader.length + fileBytes.length;
+                }
+                centralDirectoryData.forEach(cd => { cdLength += cd.length; zipData.push(cd); });
+                const eocd = new Uint8Array(22); const viewEOCD = new DataView(eocd.buffer);
+                viewEOCD.setUint32(0, 0x06054b50, true); viewEOCD.setUint16(8, convertedFiles.length, true); viewEOCD.setUint16(10, convertedFiles.length, true);
+                viewEOCD.setUint32(12, cdLength, true); viewEOCD.setUint32(16, localHeaderOffset, true); zipData.push(eocd);
+                const blob = new Blob(zipData, { type: 'application/zip' }); const zipUrl = URL.createObjectURL(blob);
+                const tempLink = document.createElement('a'); tempLink.href = zipUrl; tempLink.download = 'imagenes_convertidas.zip'; tempLink.click(); URL.revokeObjectURL(zipUrl);
+            } catch (e) { alert('Error al generar ZIP'); }
+        });
+        function crc32(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r[t])];return(-1^n)>>>0}
+    </script>
+
+    <script>
+        const cropDropZone = document.getElementById('crop-drop-zone');
+        const cropFileInput = document.getElementById('crop-file-input');
+        const cropWorkspace = document.getElementById('crop-workspace');
+        const btnCrop = document.getElementById('btn-crop');
+        const resultContainer = document.getElementById('result-container');
+        const resultPreview = document.getElementById('result-preview');
+        const cropDownloadBtn = document.getElementById('crop-download-btn');
+
+        let cropper;
+
+        cropDropZone.addEventListener('click', () => cropFileInput.click());
+        cropFileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) loadImage(e.target.files[0]); });
+
+        function loadImage(file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                cropWorkspace.innerHTML = `<img id="image-to-crop" src="${event.target.result}">`;
+                const image = document.getElementById('image-to-crop');
+                cropper = new Cropper(image, { viewMode: 1, autoCropArea: 0.8, responsive: true });
+                btnCrop.style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        btnCrop.addEventListener('click', () => {
+            if (!cropper) return;
+            const croppedCanvas = cropper.getCroppedCanvas({ imageSmoothingEnabled: true, imageSmoothingQuality: 'high' });
+            const croppedUrl = croppedCanvas.toDataURL('image/png');
+            resultPreview.src = croppedUrl;
+            cropDownloadBtn.href = croppedUrl;
+            cropDownloadBtn.download = 'recorte_toolbox.png';
+            resultContainer.style.display = 'block';
+        });
+
+        document.getElementById('btn-free').addEventListener('click', () => cropper && cropper.setAspectRatio(NaN));
+        document.getElementById('btn-11').addEventListener('click', () => cropper && cropper.setAspectRatio(1));
+        document.getElementById('btn-169').addEventListener('click', () => cropper && cropper.setAspectRatio(16 / 9));
+    </script>
+
+    <script>
+        const compDropZone = document.getElementById('comp-drop-zone');
+        const compFileInput = document.getElementById('comp-file-input');
+        const editorLayout = document.getElementById('editor-layout');
+        const qualityRange = document.getElementById('quality-range');
+        const qualityVal = document.getElementById('quality-val');
+        const unitSelect = document.getElementById('unit-select');
+        const imgWidth = document.getElementById('img-width');
+        const imgHeight = document.getElementById('img-height');
+        const weightOrig = document.getElementById('weight-orig');
+        const weightDest = document.getElementById('weight-dest');
+        const compDownloadBtn = document.getElementById('comp-download-btn');
+
+        let compOriginalImage = null;
+        let compOriginalFileName = "imagen";
+        let compAspectRatio = 1;
+        const DPI = 300;
+        const CM_TO_INCH = 2.54;
+
+        compDropZone.addEventListener('click', () => compFileInput.click());
+        compFileInput.addEventListener('change', (e) => { if(e.target.files.length > 0) handleCompFile(e.target.files[0]); });
+
+        function handleCompFile(file) {
+            compOriginalFileName = file.name.substring(0, file.name.lastIndexOf('.')) || "imagen";
+            weightOrig.textContent = formatBytes(file.size);
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                compOriginalImage = new Image();
+                compOriginalImage.onload = function() {
+                    compAspectRatio = compOriginalImage.width / compOriginalImage.height;
+                    updateDimensionsDisplay();
+                    editorLayout.style.display = 'block';
+                    compDropZone.style.display = 'none';
+                    updateCompression();
+                };
+                compOriginalImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function updateDimensionsDisplay() {
+            if (!compOriginalImage) return;
+            if (unitSelect.value === 'px') {
+                imgWidth.value = compOriginalImage.width;
+                imgHeight.value = compOriginalImage.height;
+            } else {
+                imgWidth.value = ((compOriginalImage.width * CM_TO_INCH) / DPI).toFixed(2);
+                imgHeight.value = ((compOriginalImage.height * CM_TO_INCH) / DPI).toFixed(2);
+            }
+        }
+
+        unitSelect.addEventListener('change', updateDimensionsDisplay);
+        qualityRange.addEventListener('input', (e) => { qualityVal.textContent = e.target.value; updateCompression(); });
+        imgWidth.addEventListener('input', () => { if(imgWidth.value) { imgHeight.value = (imgWidth.value / compAspectRatio).toFixed(2); updateCompression(); } });
+        imgHeight.addEventListener('input', () => { if(imgHeight.value) { imgWidth.value = (imgHeight.value * compAspectRatio).toFixed(2); updateCompression(); } });
+
+        function updateCompression() {
+            if (!compOriginalImage) return;
+            const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d');
+            let w = parseFloat(imgWidth.value) || compOriginalImage.width;
+            let h = parseFloat(imgHeight.value) || compOriginalImage.height;
+
+            if (unitSelect.value === 'cm') {
+                w = Math.round((w * DPI) / CM_TO_INCH); h = Math.round((h * DPI) / CM_TO_INCH);
             }
 
-            centralDirectoryOffset = localHeaderOffset;
-            let cdLength = 0;
-            centralDirectoryData.forEach(cd => { cdLength += cd.length; zipData.push(cd); });
-
-            const eocd = new Uint8Array(22);
-            const viewEOCD = new DataView(eocd.buffer);
-
-            viewEOCD.setUint32(0, 0x06054b50, true);
-            viewEOCD.setUint16(4, 0, true);
-            viewEOCD.setUint16(6, 0, true);
-            viewEOCD.setUint16(8, convertedFiles.length, true);
-            viewEOCD.setUint16(10, convertedFiles.length, true);
-            viewEOCD.setUint32(12, cdLength, true);
-            viewEOCD.setUint32(16, centralDirectoryOffset, true);
-            viewEOCD.setUint16(20, 0, true);
-
-            zipData.push(eocd);
-
-            const blob = new Blob(zipData, { type: 'application/zip' });
-            const zipUrl = URL.createObjectURL(blob);
+            canvas.width = w; canvas.height = h;
+            ctx.drawImage(compOriginalImage, 0, 0, w, h);
             
-            const tempLink = document.createElement('a');
-            tempLink.href = zipUrl;
-            tempLink.download = 'imagenes_convertidas.zip';
-            tempLink.click();
-            
-            URL.revokeObjectURL(zipUrl);
-        } catch (error) {
-            alert('Ocurrió un error al empaquetar el archivo ZIP.');
+            let outputUrl = canvas.toDataURL('image/jpeg', qualityRange.value / 100);
+            if (unitSelect.value === 'cm') outputUrl = forceJPEG300DPI(outputUrl);
+
+            const approxSize = Math.round((outputUrl.length - 23) * 3 / 4);
+            weightDest.textContent = formatBytes(approxSize);
+            compDownloadBtn.href = outputUrl;
+            compDownloadBtn.download = `${compOriginalFileName}_300dpi.jpg`;
         }
-    });
 
-    function crc32(r){for(var a,o=[],c=0;c<256;c++){a=c;for(var f=0;f<8;f++)a=1&a?3988292384^a>>>1:a>>>1;o[c]=a}for(var n=-1,t=0;t<r.length;t++)n=n>>>8^o[255&(n^r[t])];return(-1^n)>>>0}
+        function forceJPEG300DPI(base64Image) {
+            const sections = base64Image.split(','); const byteString = atob(sections[1]);
+            const byteArray = new Uint8Array(byteString.length);
+            for (let i = 0; i < byteString.length; i++) byteArray[i] = byteString.charCodeAt(i);
+            if (byteArray[2] === 0xFF && byteArray[3] === 0xE0) {
+                byteArray[13] = 1; byteArray[14] = 0x01; byteArray[15] = 0x2C; byteArray[16] = 0x01; byteArray[17] = 0x2C;
+            }
+            const exifHeader = [0xFF,0xE1,0x00,0x26,0x45,0x78,0x69,0x66,0x00,0x00,0x49,0x49,0x2A,0x00,0x08,0x00,0x00,0x00,0x02,0x00,0x1A,0x01,0x05,0x00,0x01,0x00,0x00,0x00,0x1A,0x00,0x00,0x00,0x1B,0x01,0x05,0x00,0x01,0x00,0x00,0x00,0x22,0x00,0x00,0x00];
+            let resultBuffer = new Uint8Array(byteArray.length + exifHeader.length);
+            resultBuffer.set(byteArray.subarray(0, 20), 0); resultBuffer.set(exifHeader, 20); resultBuffer.set(byteArray.subarray(20), 20 + exifHeader.length);
+            let binary = ''; for (let i = 0; i < resultBuffer.byteLength; i++) binary += String.fromCharCode(resultBuffer[i]);
+            return sections[0] + ',' + btoa(binary);
+        }
+
+        function formatBytes(bytes) { if (bytes === 0) return '0 Bytes'; const k = 1024, dm = 2, sizes = ['Bytes', 'KB', 'MB']; const i = Math.floor(Math.log(bytes) / Math.log(k)); return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; }
+    </script>
+
+
+ <section id="palette-generator" class="tool-section">
+    <style>.drop-zone {
+  border: 2px dashed #cbd5e1;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 20px;
+}
+
+.drop-zone:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.palette-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.color-card {
+  height: 150px;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.color-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Ocultamos el input de color feo del sistema y lo hacemos estético */
+.color-card input[type="color"] {
+  border: none;
+  width: 45px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+}
+
+.btn-picker {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.btn-picker:hover {
+  background: #ffffff;
+  transform: scale(1.1);
+}</style>
+    
+           <div class="palette-container">
+  <h2>Extraer y Seleccionar de Paletas CSS</h2>
+  <p>Sube una imagen para extraer su paleta dominante o usa los selectores manuales para afinar tus variables.</p>
+
+  <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" style="background:#0f172a;">
+    <p><i class="fi fi-sr-picture"></i> Arrastra una imagen aquí o haz clic para subir</p>
+    <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleImage(this.files[0])">
+    <img id="preview-img" style="display:none; max-height: 150px; border-radius: 8px; margin-top: 10px;">
+  </div>
+
+  <div class="palette-preview">
+    <div class="color-card" id="card-bg">
+      <span class="color-name">Background</span>
+      <input type="color" id="input-bg" value="#ffffff" onchange="updateFromInputs()">
+      <button class="btn-picker" onclick="pickColor('bg')"><i class="fi fi-ss-search-heart"></i></button>
+    </div>
+    
+    <div class="color-card" id="card-primary">
+      <span class="color-name">Primary</span>
+      <input type="color" id="input-primary" value="#3b82f6" onchange="updateFromInputs()">
+      <button class="btn-picker" onclick="pickColor('primary')"><i class="fi fi-ss-search-heart"></i></button>
+    </div>
+
+    <div class="color-card" id="card-secondary">
+      <span class="color-name">Secondary</span>
+      <input type="color" id="input-secondary" value="#10b981" onchange="updateFromInputs()">
+      <button class="btn-picker" onclick="pickColor('secondary')"><i class="fi fi-ss-search-heart"></i></button>
+    </div>
+
+    <div class="color-card" id="card-accent">
+  <span class="color-name">Accent</span>
+  <input type="color" id="input-accent" value="#f59e0b" onchange="updateFromInputs()">
+  <button class="btn-picker" onclick="pickColor('accent')"><i class="fi fi-ss-search-heart"></i></button>
+</div>
+
+    <div class="color-card" id="card-text">
+      <span class="color-name">Text</span>
+      <input type="color" id="input-text" value="#1f2937" onchange="updateFromInputs()">
+      <button class="btn-picker" onclick="pickColor('text')"><i class="fi fi-ss-search-heart"></i></button>
+    </div>
+    
+    <div class="color-card" id="card-surface">
+      <span class="color-name">Surface</span>
+      <input type="color" id="input-surface" value="#f3f4f6" onchange="updateFromInputs()">
+      <button class="btn-picker" onclick="pickColor('surface')"><i class="fi fi-ss-search-heart"></i></button>
+    </div>
+  </div>
+
+
+  <div class="css-output-wrapper">
+    <pre><code id="css-code">/* Sube una imagen o cambia los colores para generar el código */</code></pre>
+    <button onclick="copyCSS()" class="btn-copy" style="border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text);
+    border: none;
+    padding: 10px 20px;"><i class="fi fi-ss-copy-alt"></i> Copiar Variables CSS</button>
+  </div>
+
+  <div class="palette-image-wrapper" style="margin-top: 20px; text-align: center;">
+  <h3><i class="fi fi-sr-picture"></i> Imagen de Paleta para arrastrar a Canva/PowerPoint</h3>
+  <p style="font-size: 0.85rem; color: #94a3b8;">Haz clic derecho para guardar o arrástrala directo a tus diapositivas</p>
+  <img id="palette-render-img" alt="Paleta de Colores Generada" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-width: 100%;">
+</div>
+
+<canvas id="canvas-export" style="display:none;"></canvas>
+</div>
+
+<canvas id="proc-canvas" style="display:none;"></canvas>
+
+<script>
+// 1. Manejo de la Imagen y Extracción de Colores
+function handleImage(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      // Mostrar preview de imagen
+      const preview = document.getElementById('preview-img');
+      preview.src = event.target.result;
+      preview.style.display = 'block';
+      
+      // Extraer colores usando Canvas
+      extractColorsFromImage(img);
+    }
+    img.src = event.target.result;
+  }
+  reader.readAsDataURL(file);
+}
+
+function extractColorsFromImage(img) {
+  const canvas = document.getElementById('proc-canvas');
+  const ctx = canvas.getContext('2d');
+  
+  // Redimensionar canvas pequeño para promediar clusters de color rápido
+  canvas.width = 50;
+  canvas.height = 50;
+  ctx.drawImage(img, 0, 0, 50, 50);
+  
+  const imgData = ctx.getImageData(0, 0, 50, 50).data;
+  const colors = [];
+  
+  // Agrupar colores saltando de 4 en 4 píxeles para optimizar
+  for (let i = 0; i < imgData.length; i += 16) {
+    const r = imgData[i];
+    const g = imgData[i+1];
+    const b = imgData[i+2];
+    // Convertir a HEX
+    const hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    colors.push(hex);
+  }
+
+  // Selección inteligente basada en lo extraído
+  // Nota: Esto es un muestreo simple pero efectivo sin usar librerías densas
+  const bg = colors[0] || '#ffffff';
+  const primary = colors[Math.floor(colors.length * 0.25)] || '#3b82f6';
+  const secondary = colors[Math.floor(colors.length * 0.6)] || '#10b981';
+  const text = isColorDark(bg) ? '#f3f4f6' : '#111827'; // Contraste inteligente
+const accent = colors[Math.floor(colors.length * 0.85)] || '#f59e0b'; // <--- tercer color destacado para acentos
+
+
+  // Asignar valores a los inputs nativos
+  document.getElementById('input-bg').value = bg;
+  document.getElementById('input-primary').value = primary;
+  document.getElementById('input-secondary').value = secondary;
+  document.getElementById('input-text').value = text;
+document.getElementById('input-accent').value = accent;
+
+
+  updateUI();
+}
+
+// Auxiliar para saber si un color es oscuro (fórmula de luminancia)
+function isColorDark(hex) {
+  const rgb = parseInt(hex.substring(1), 16);
+  const r = (rgb >> 16) & 0xff;
+  const g = (rgb >> 8) & 0xff;
+  const b = (rgb >> 0) & 0xff;
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  return luma < 128;
+}
+
+// 2. Uso del Cuentagotas Nativo (EyeDropper API)
+async function pickColor(target) {
+  if (!window.EyeDropper) {
+    alert("Tu navegador no soporta el cuentagotas nativo. Usa el cuadro de color manual.");
+    return;
+  }
+  const eyeDropper = new EyeDropper();
+  try {
+    const result = await eyeDropper.open();
+    document.getElementById(`input-${target}`).value = result.sRGBHex;
+    updateUI();
+  } catch (e) {
+    console.log("Selección cancelada");
+  }
+}
+
+// 3. Actualizar Interfaz y Código CSS
+function updateFromInputs() {
+  updateUI();
+}
+
+function updateUI() {
+  const bg = document.getElementById('input-bg').value;
+  const primary = document.getElementById('input-primary').value;
+  const secondary = document.getElementById('input-secondary').value;
+  const accent = document.getElementById('input-accent').value; // <--- Capturar accent
+  const text = document.getElementById('input-text').value;
+  
+  // ( ... toda tu lógica de surface que ya armamos ... )
+  const isBgDark = isColorDark(bg);
+  const surface = isBgDark ? '#1f2937' : '#f8fafc';
+  document.getElementById('input-surface').value = surface;
+
+  // Renderizar fondos de las tarjetas
+  document.getElementById('card-bg').style.backgroundColor = bg;
+  document.getElementById('card-primary').style.backgroundColor = primary;
+  document.getElementById('card-secondary').style.backgroundColor = secondary;
+  document.getElementById('card-accent').style.backgroundColor = accent; // <--- Pintar tarjeta
+  document.getElementById('card-text').style.backgroundColor = text;
+  document.getElementById('card-surface').style.backgroundColor = surface;
+
+  // Ajustar contraste de etiquetas de forma independiente (¡con la solución anterior!)
+  document.getElementById('card-bg').style.color = isBgDark ? '#fff' : '#1e293b';
+  document.getElementById('card-primary').style.color = isColorDark(primary) ? '#fff' : '#1e293b';
+  document.getElementById('card-secondary').style.color = isColorDark(secondary) ? '#fff' : '#1e293b';
+  document.getElementById('card-accent').style.color = isColorDark(accent) ? '#fff' : '#1e293b'; // <--- Contraste accent
+  document.getElementById('card-text').style.color = isColorDark(text) ? '#fff' : '#1e293b';
+  document.getElementById('card-surface').style.color = isBgDark ? '#fff' : '#1e293b';
+
+ 
+// Construir bloque CSS con la nueva variable y una sección limpia para tus diapositivas/Canva
+  const cssTemplate = `:root {
+  --background-color: ${bg};
+  --surface-color: ${surface};
+  --primary-color: ${primary};
+  --secondary-color: ${secondary};
+  --accent-color: ${accent};
+  --text-color: ${text};
+}`;
+
+  document.getElementById('css-code').innerText = cssTemplate;
+
+  // === NUEVO: GENERADOR DE IMAGEN AUTOMÁTICA PARA CANVA/POWERPOINT ===
+  const exportCanvas = document.getElementById('canvas-export');
+  const exportCtx = exportCanvas.getContext('2d');
+
+  // Definir tamaño de la imagen que se va a generar (Ej: 800x200 píxeles, un banner limpio)
+  exportCanvas.width = 800;
+  exportCanvas.height = 200;
+
+  // Lista de colores ordenados para pintar las 5 franjas
+  const colorList = [bg, surface, primary, secondary, accent];
+  const labelList = ["BG", "SURFACE", "PRIMARY", "SECONDARY", "ACCENT"];
+  const widthPerColor = exportCanvas.width / colorList.length;
+
+  // Dibujar cada franja de color en el lienzo
+  colorList.forEach((color, index) => {
+    exportCtx.fillStyle = color;
+    exportCtx.fillRect(index * widthPerColor, 0, widthPerColor, exportCanvas.height);
+
+    // Escribir el texto encima con contraste inteligente
+    exportCtx.fillStyle = isColorDark(color) ? '#ffffff' : '#1e293b';
+    exportCtx.font = 'bold 16px sans-serif';
+    exportCtx.textAlign = 'center';
+    
+    // Nombre del rol del color (Ej: PRIMARY)
+    exportCtx.fillText(labelList[index], (index * widthPerColor) + (widthPerColor / 2), 90);
+    // Código HEX (Ej: #3b82f6)
+    exportCtx.font = '14px monospace';
+    exportCtx.fillText(color.toUpperCase(), (index * widthPerColor) + (widthPerColor / 2), 120);
+  });
+
+  // Convertir el lienzo en una imagen real (Base64) y meterla en el tag <img> del HTML
+  document.getElementById('palette-render-img').src = exportCanvas.toDataURL('image/png');
+}
+
+function copyCSS() {
+  const codeText = document.getElementById('css-code').innerText;
+  navigator.clipboard.writeText(codeText).then(() => {
+    alert('¡Variables CSS copiadas! 🚀');
+  });
+}
+
+// Soporte para Arrastrar y Soltar (Drag & Drop)
+const dropZone = document.getElementById('drop-zone');
+['dragenter', 'dragover'].forEach(eventName => {
+  dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = '#2563eb'; }, false);
+});
+['dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, (e) => { e.preventDefault(); dropZone.style.borderColor = '#cbd5e1'; }, false);
+});
+dropZone.addEventListener('drop', (e) => {
+  handleImage(e.dataTransfer.files[0]);
+});
+
+// Inicializar por defecto
+updateUI();
 </script>
 
+ </section>
+
+  
+ 
 </body>
 </html>
