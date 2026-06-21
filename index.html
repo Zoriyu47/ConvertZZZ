@@ -193,19 +193,99 @@
         .controls { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         #result-container { display: none; margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; text-align: center; }
         #result-preview { max-width: 100%; border-radius: 8px; margin-bottom: 1rem; }
-    </style>
+   /* --- Estilos para el botón de hamburguesa (Oculto por defecto) --- */
+.menu-toggle {
+  display: none;
+  background: #2563eb;
+  color: white;
+  border: none;
+  font-size: 1.5rem;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+/* --- Media Query para Celulares --- */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block; /* Aparece el botón en móvil */
+    position: fixed;
+    top: 15px;
+    right: 15px;
+  }
+
+  /* Transformamos el menú horizontal en una cortina vertical */
+  .nav-links {
+    display: none; /* Oculto por defecto en móvil */
+    flex-direction: column;
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    background: #1e293b; /* Fondo oscuro a juego con tu suite */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    gap: 12px;
+    z-index: 999;
+    width: 200px;
+  }
+
+  /* Clase que activará JavaScript para mostrarlo */
+  .nav-links.active {
+    display: flex;
+    animation: fadeIn 0.2s ease-in-out;
+  }
+
+  /* Ajuste para que los botones ocupen todo el ancho en móvil */
+  .nav-links .nav-btn {
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+  }
+}
+
+/* Animación sutil de aparición */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+   
+   </style>
 </head>
 <body>
   
     <nav class="navbar">
          <img src="/media/logo-zorizori.png" alt="Zoriyu" style="width: 40px;
  opacity="0.15" transform="rotate(15deg)">
+ <div class="nav-links" id="nav-links">
         <button class="nav-btn active" onclick="switchTool('converter')"><i class="fi fi-sr-refresh"></i> Convertir</button>
         <button class="nav-btn" onclick="switchTool('cropper')"> <i class="fi fi-sr-scissors"></i> Recortar</button>
         <button class="nav-btn" onclick="switchTool('compressor')"><i class="fi fi-sr-mode-portrait"></i> Redimensionar (CM)</button>
         <button class="nav-btn" onclick="switchTool('palette-generator')"><i class="fi fi-sr-palette"></i> Generar de Paleta</button>
-
+</div>
+        <button class="menu-toggle" id="menu-toggle" onclick="toggleMenu()">
+  ☰
+</button>
     </nav>
+
+    <script>
+        function toggleMenu() {
+  const navLinks = document.getElementById('nav-links');
+  navLinks.classList.toggle('active');
+}
+
+// Opcional: Cerrar el menú automáticamente si haces clic afuera
+document.addEventListener('click', function(event) {
+  const navLinks = document.getElementById('nav-links');
+  const toggleBtn = document.getElementById('menu-toggle');
+  
+  if (!navLinks.contains(event.target) && !toggleBtn.contains(event.target)) {
+    navLinks.classList.remove('active');
+  }
+});
+    </script>
 
     <div class="main-container">
 
