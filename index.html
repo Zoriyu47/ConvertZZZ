@@ -560,6 +560,53 @@ document.addEventListener('click', function(event) {
   background: #b91c1c !important; /* Rojo más oscuro al tocarlo */
 }
 
+
+/* 1. EL CONTENEDOR PRINCIPAL (ZONA OSCURA) */
+#imprimible.tool-section {
+  width: 90vw;
+  max-height: 75vh;          /* Altura máxima en pantalla para que no rompa tu app */
+  overflow-y: auto !important; /* Activa el scroll vertical solo aquí dentro */
+  padding: 20px !important;
+  box-sizing: border-box;
+  background: #130f26;       /* Mantiene el fondo oscuro de tu suite */
+  border-radius: 8px;
+}
+
+/* Personalizar la barra de scroll para que se vea moderna */
+#imprimible.tool-section::-webkit-scrollbar {
+  width: 8px;
+}
+#imprimible.tool-section::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 4px;
+}
+
+/* 2. EL LIENZO BLANCO (CRECE INFINITAMENTE PERO SE MARCA CADA HOJA) */
+.canvas-carta {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-content: flex-start !important;
+  gap: 10px !important;
+  position: relative !important;
+  margin: 0 auto !important;
+  padding: 1cm !important;
+  width: 21.59cm !important;     /* Ancho fijo de hoja Carta */
+  min-height: 27.94cm !important; /* Mínimo una hoja completa */
+  height: auto !important;        /* Permite que crezca hacia abajo si mete más imágenes */
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+  box-sizing: border-box !important;
+
+  /* TRUCO MAESTRO: Dibuja una línea roja punteada exactamente cada 27.94 cm */
+  background-image: linear-gradient(to bottom, 
+    transparent 27.92cm, 
+    #ff4757 27.92cm, 
+    #ff4757 27.94cm
+  ) !important;
+  background-size: 100% 27.94cm !important; /* Repite la línea en cada límite de página */
+}
+
+
 /* ===================================================
    ajuste de impresion
    =================================================== */
@@ -622,6 +669,23 @@ document.addEventListener('click', function(event) {
   @page {
     size: letter;
     margin: 0 !important;
+  }
+
+
+  /* El contenedor se expande por completo para la impresión */
+  #imprimible.tool-section {
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  /* Quitamos la línea roja guía para que el PDF salga inmaculado */
+  .canvas-carta {
+    background-image: none !important; 
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    height: 27.94cm !important; /* En papel físico se clava en el tamaño real */
   }
 }
 
